@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MulchLayer {
     public Dictionary<string, SoilNutrientManager> soilNutrientManagers;
+    public float volume;
 
     public MulchLayer() {
         soilNutrientManagers = new Dictionary<string, SoilNutrientManager>();
