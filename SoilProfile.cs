@@ -37,11 +37,21 @@ public class SoilProfile : MonoBehaviour {
             soilHorizons[0].soilNutrientManagers["Water"].amount = amount + amountToBeAbsorbed;
         }
 
-        drainWaterThroughHorizons()
+        drainWaterThroughHorizons();
     }
 
-    public void applyWind() {
+    public void evaporateWater(float sumOfWindSpeeds) {
+        // only used for evaporation of water at this point in time.
+        float amount = soilHorizons[0].soilNutrientManagers["water"].amount;
+        float evaporationRate = soilHorizons[0].soilNutrientManagers["water"].atmosphericRemovalRate;
+        float waterToRemove = sumOfWindSpeeds * evaporationRate;
 
+        if (waterToRemove>amount) {
+            soilHorizons[0].soilNutrientManagers["water"].amount = 0;
+        } 
+        else {
+            soilHorizons[0].soilNutrientManagers["water"].amount = amount - waterToRemove;
+        }
     }
 
     public void digSoil() {

@@ -11,10 +11,11 @@ public class SoilNutrientManager : NutrientManager{
 
     public float amount;
     public float amountAvailable;
+    // (only used for water for the time being)
     public float capacity;
-    public float absorption;
-    public float atmosphericRemovalRate;
-    public float drainageRemovalRate;
+    public float absorptionRate;
+    public float atmosphericRemovalRate; // evaporation through wind in the case of water
+    public float drainageRemovalRate; // drainage
 
 }
 

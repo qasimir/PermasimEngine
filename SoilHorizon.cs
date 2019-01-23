@@ -24,7 +24,7 @@ public class SoilHorizon : MonoBehaviour {
     public float porosity;
     public float compactionConstant;
     public float maximumCompaction;
-    public float decompositionRate;
+    public float biota;
     public float erosionRate;
     public float phResistance;
 
