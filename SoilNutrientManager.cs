@@ -10,12 +10,30 @@ public class SoilNutrientManager : NutrientManager{
     }
 
     public float amount;
-    public float amountAvailable;
+    private float amountAvailableFactor;
+
     // (only used for water for the time being)
     public float capacity;
     public float absorptionRate;
     public float atmosphericRemovalRate; // evaporation through wind in the case of water
     public float drainageRemovalRate; // drainage
+
+    // miscelleneous parameters
+    public float postDiggingAvailability;
+
+    public void setAmountAvailableFactor(float amountAvailable) {
+        if (amountAvailable > 1) {
+            amountAvailable = 1;
+        } else {
+            this.amountAvailableFactor = amountAvailable;
+        }
+    }
+
+    public float getAmountAvailable() {
+        return amountAvailableFactor;
+    }
+
+
 
 }
 

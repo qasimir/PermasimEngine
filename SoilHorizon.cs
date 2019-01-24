@@ -28,6 +28,8 @@ public class SoilHorizon : MonoBehaviour {
     public float erosionRate;
     public float phResistance;
 
+    // this is the upper and lower bound for the soil type
+    // they are expressed as negative numbers
     public float upperBound;
     public float lowerBound;
 

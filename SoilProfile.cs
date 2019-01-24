@@ -54,13 +54,20 @@ public class SoilProfile : MonoBehaviour {
         }
     }
 
+    // TODO: approximation made here that only the first layer of soil can be dug. Alter this for depth.
     public void digSoil() {
-
-    }
-
-    public void decompact() {
-        // over time, soil will loosen up through mechanisms like
-        // root penetration, temperature fluctuations, water evaporation etc.
+        SoilHorizon soil = soilHorizons[0];
+        // firstly, the soil becomes a great deal more porous.
+        //TODO: have different modifiers for different soil types
+        soil.porosity = soil.porosityAfterDigging;
+        // secondly the soil biota decreases.
+        soil.biota = soil.biotaAfterDigging;
+        // also the amount of nutrient available increases
+        foreach (string nutrientName in soil.soilNutrientManagers.Keys) {
+            //we don't care about water here, because only water content is meaningful
+            SoilNutrientManager nutrient = soil.soilNutrientManagers[nutrientName];
+            nutrient.setAmountAvailableFactor(nutrient.postDiggingAvailability);
+        }
     }
 
     public void flowWaterOnSurface(float volume) {
