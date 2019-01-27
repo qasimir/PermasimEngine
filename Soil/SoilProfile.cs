@@ -62,6 +62,9 @@ public class SoilProfile : MonoBehaviour {
         soil.porosity = soil.porosityAfterDigging;
         // secondly the soil biota decreases.
         soil.biota = soil.biotaAfterDigging;
+        // thirdly aggregate stability decreases
+        soil.aggregateStability = soil.aggregateStabilityAfterDigging;
+
         // also the amount of nutrient available increases
         foreach (string nutrientName in soil.soilNutrientManagers.Keys) {
             //we don't care about water here, because only water content is meaningful

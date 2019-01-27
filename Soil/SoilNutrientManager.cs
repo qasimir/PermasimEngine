@@ -29,7 +29,7 @@ public class SoilNutrientManager : NutrientManager{
         }
     }
 
-    public float getAmountAvailable() {
+    public float getAmountAvailableFactor() {
         return amountAvailableFactor;
     }
 

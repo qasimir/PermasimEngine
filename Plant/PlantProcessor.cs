@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlantProcessor : MonoBehaviour {
 
-    public void processPlant(Plant plant) {
+    public static void processPlant(ref Plant plant) {
 
 
         // calculate the tolerances, optimum levels, and sequestration rates
@@ -38,7 +38,7 @@ public class PlantProcessor : MonoBehaviour {
 
    
    
-    private void sequestNutrient(ref Plant plant) {
+    private static void sequestNutrient(ref Plant plant) {
         Segment segment = plant.segment;
         float rootDepth = plant.rootDepth; //might overwrite, but shouldn't
         float rootRadius = plant.rootWidth / 2;
@@ -59,7 +59,7 @@ public class PlantProcessor : MonoBehaviour {
     }
 
     // TODO: optimize this method. Too much stuff in the if statements.
-    private void setGrowthFactor(ref PlantNutrientManager nutrient, ref Plant plant, out float growthFactor) {
+    private static void setGrowthFactor(ref PlantNutrientManager nutrient, ref Plant plant, out float growthFactor) {
         // TODO: currently a linear first approximation
         // consider changing this to gaussian distance
         // optimal growth factor is 1. 
@@ -94,7 +94,7 @@ public class PlantProcessor : MonoBehaviour {
         }
     }
 
-    private void grow(float limitingGrowthFactor, ref Plant plant) {
+    private static void grow(float limitingGrowthFactor, ref Plant plant) {
         // calculate the average of the growth rates. 
         // TODO: If the plant is dormant, then we don't want to age the plant, as the metabolic rate is near 0
         // TODO: add in a pest burden;
@@ -106,13 +106,13 @@ public class PlantProcessor : MonoBehaviour {
         plant.foliageWidth = plant.foliageWidthPercentTotal * plant.totalSize;
     }
 
-    private float volumeInDiagonalSubsection(float x1,float x2, float r, float d) {
+    private static float volumeInDiagonalSubsection(float x1,float x2, float r, float d) {
         float term1 = Mathf.Pow(r, 2) * x1 + (Mathf.Pow((r / d), 2) * Mathf.Pow(x1, 3)) / 3 - (Mathf.Pow(r, 2) * Mathf.Pow(x1, 2)) / d;
         float term2 = Mathf.Pow(r, 2) * x2 + (Mathf.Pow((r / d), 2) * Mathf.Pow(x2, 3)) / 3 - (Mathf.Pow(r, 2) * Mathf.Pow(x2, 2)) / d;
         return Mathf.Abs(Mathf.PI * (term1 - term2));
     }
 
-    private float maxPlantGrowthCurve(ref Plant plant) {
+    private static float maxPlantGrowthCurve(ref Plant plant) {
         // growth curve should be of the form:
         // size = a*t^3 + b*t^2 (finitely bounded sigmoid shape)
         // unless the plant has passed maturity

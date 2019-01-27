@@ -65,7 +65,13 @@ public class PlantNutrientManager : NutrientManager {
     }
 
     internal void sequestNutrients(string nutrientName, SoilHorizon soilHorizon, float volume) {
-        currentLevel += volume * currentSequestrationRate * soilHorizon.soilNutrientManagers[nutrientName].availability;
+        SoilNutrientManager soilNutrient = soilHorizon.soilNutrientManagers[nutrientName];
+        float amountAvailableFactor = soilNutrient.getAmountAvailableFactor();
+        float amount = soilNutrient.amount;
+        float amountToSequester = volume * currentSequestrationRate * amountAvailableFactor * amount;
+
+        soilNutrient.amount -= amountToSequester;
+        currentLevel += amountToSequester;
     }
 
     public void setNutrientGrowthFactor(float growthFactor) {
