@@ -8,23 +8,25 @@ This is a soil and plant growth simulator which is to be used in conjunction wit
 Most of the complexity of this simulation is in the soil dynamics. Soil is a difficult thing to model, and I have opted, in most cases to have simple, often linear approximations to soil dynamics.
 The soil is represented in the following heirarchy:
 
-__WorldMap__
-    |
-    |
-    |
-    v
-__Segment__
-    |----------------------|
-    |                      |
-    |                      |
-    v                      v
-__SoilProfile__        __Plant__
-    |
-    |
-    |
-    v
-__SoilHorizon__
+<pre>
+__WorldMap__  
+    |  
+    |  
+    |  
+    v  
+__Segment__  
+    |----------------------|  
+    |                      |  
+    |                      |  
+    v                      v  
+__SoilProfile__        __Plant__  
+    |  
+    |  
+    |  
+    v  
+__SoilHorizon__  
  
+</pre>
  
 __WorldMap__: this is the interface between the backend and the front end. Most importantly, it contains an array of segments
 __Segment__: this is the lowest resolution object on the world map. A segment contains plant species on it, has a soil profile, and contains pest species on it as well
