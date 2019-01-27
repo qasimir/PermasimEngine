@@ -1,4 +1,6 @@
-*
+*.meta
+*.unity
+*.asset
+Standard Assets/
 
 !.gitignore
-!*.cs

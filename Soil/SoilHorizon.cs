@@ -12,21 +12,37 @@ public class SoilHorizon : MonoBehaviour {
     public float siltPercent;
     public float humusPercent;
 
+
+
     public Dictionary<string, SoilNutrientManager> soilNutrientManagers;
 
-    public float organicMatter; // to be decayed
+    public float organicMatter; // to be decayed to nutrients and humus
 
     // temperature related
     public float temperature;
     public float thermalMass;
 
-    // other variables
+    // porosity related
     public float porosity;
-    public float compactability;
-    public float decompositionRate;
+    public float porosityAfterDigging;
+    public float compactionConstant;
+    public float maximumCompaction;
+
+    // biota related 
+    public float biota;
+    public float biotaAfterDigging;
+
+    //related to aggregates and the stability of the aggregates
+    public float aggregateStability;
+    public float aggregateStabilityAfterDigging;
+
+
+    // other variables
     public float erosionRate;
     public float phResistance;
 
+    // this is the upper and lower bound for the soil type
+    // they are expressed as negative numbers
     public float upperBound;
     public float lowerBound;
 
