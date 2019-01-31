@@ -13,13 +13,19 @@ namespace Assets.GameEngine {
         private float soilTemp { get; set; }
         private List<SoilEffect> soilEffects;
 
-        public void alterSoil() {
-            // increment all the times on the soil effects
+        public void evolveSoil() {
+            foreach  (SoilEffect soilEffect in soilEffects) {
+                // here we multiply by the baseline quality to normalize
+                currentQuality += baselineQuality * soilEffect.getModifier(); 
+                soilEffect
+            }
+
 
         }
 
-        public void alterBaseline() {
-            // increment all the baselines on the soil effects
+        public void alterBaselineQuality(float newValue) {
+            baselineQuality = newValue;
+
         }
 
         public void dig() {

@@ -7,6 +7,7 @@ namespace Assets.GameEngine {
     class SoilEffect {
         private int t_elapsed;
         private List<SoilFunction> soilFunctions;
+        private static readonly float EFFECTLESS_FACTOR = 0.0001f;
 
         public SoilEffect(int t_elapsed, List<SoilFunction> soilFunctions) {
             this.t_elapsed = t_elapsed;
@@ -23,6 +24,18 @@ namespace Assets.GameEngine {
                 value += soilFunction.f(t_elapsed);
             }
             return value;
+        }
+
+        // this method is used to prune dead effects. 
+        // All soil effects have a lifetime, and dead ones should be removed
+        public bool needsCleaning() {
+            bool valid = false;
+            foreach (SoilFunction soilFunction in soilFunctions) {
+                if (soilFunction.f(t_elapsed) > EFFECTLESS_FACTOR) {
+                    valid = true;
+                }
+            }
+            return valid;
         }
 
         public void incrementTimeElapsed() {
