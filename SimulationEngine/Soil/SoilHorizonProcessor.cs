@@ -6,8 +6,6 @@ using System.Text;
 
 public class SoilHorizonProcessor {
 
-    
-
     public static void processSoil(ref SoilHorizon soilHorizon) {
         float dOdt;
 
@@ -84,7 +82,16 @@ public class SoilHorizonProcessor {
     }
 
     private static void calibratePorosity(ref SoilHorizon soilHorizon) {
-        throw new NotImplementedException();
+        // P = k1*As + k2 + k3*Hu
+        float k1 = soilHorizon.porosityAggregateStabilityConstant;
+        float aggregateStability = soilHorizon.aggregateStability;
+
+        float k2 = soilHorizon.porositySoilCompositionalFactor;
+
+        float k3 = soilHorizon.porosityHumusConstant;
+        float humus = soilHorizon.getHumusPercent();
+
+        soilHorizon.porosity = k1 * aggregateStability + k2 + k3 * humus;
     }
 
     private static void calibrateOrganicMatter(ref SoilHorizon soilHorizon, out float dOdt) {

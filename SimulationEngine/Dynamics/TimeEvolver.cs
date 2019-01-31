@@ -6,7 +6,7 @@ using System.Text;
 
 public class TimeEvolver {
 
-    public  void evolveTime(float timeInDays = 7 ) {
+    public void evolveTime(float timeInDays = 7 ) {
         // generate weather events (rain/wind etc.)
 
         for (int x = 0; x < WorldMap.mapWidth; x++) {
@@ -28,8 +28,9 @@ public class TimeEvolver {
     }
 
     private void evolveSoil(ref SoilProfile soilProfile) {
-        foreach (SoilHorizon soilHorizon in soilProfile.soilHorizons) {
-
+        for (int i = 0;i<soilProfile.soilHorizons.Count(); i++) {
+            SoilHorizon soilHorizon = soilProfile.soilHorizons[i];
+            SoilHorizonProcessor.processSoil(ref soilHorizon);
         }
     }
 

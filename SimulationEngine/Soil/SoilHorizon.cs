@@ -28,7 +28,11 @@ public class SoilHorizon : MonoBehaviour {
 
     // porosity related
     public float porosity;
+    public float porosityHumusConstant;
+    public float porosityAggregateStabilityConstant;
+    public float porositySoilCompositionalFactor;
     public float porosityAfterDigging;
+
     public float compactionConstant;
     public float maximumCompaction;
 
@@ -80,8 +84,12 @@ public class SoilHorizon : MonoBehaviour {
         soilNutrientManagers.Add("water", new SoilNutrientManager("water"));
     }
 
-    public void calibrateSoilConstituents() {
-
+    public void normalizeSoilConstituents() {
+        float total = sandPercent + siltPercent + clayPercent + humusPercent;
+        sandPercent = sandPercent / total;
+        siltPercent = siltPercent / total;
+        clayPercent = clayPercent / total;
+        humusPercent = humusPercent / total;
     }
 
     public float getSandPercent() {
@@ -102,22 +110,27 @@ public class SoilHorizon : MonoBehaviour {
 
     public void setSandPercent(float val) {
         sandPercent = val;
+        normalizeSoilConstituents();
     }
 
     public void setSiltPercent(float val) {
         siltPercent = val;
+        normalizeSoilConstituents();
     }
 
     public void setClayPercent(float val) {
         clayPercent = val;
+        normalizeSoilConstituents();
     }
 
     public void setHumusPercent(float val) {
         humusPercent = val;
-        calibrateSoilConstituents();
+        normalizeSoilConstituents();
     }
 
-
+    public float getAeration() {
+        return porosity - soilNutrientManagers["water"].amount;
+    }
 
 }
 
