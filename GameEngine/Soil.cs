@@ -10,23 +10,34 @@ namespace Assets.GameEngine {
         private float baselineQuality { get; set; } // between 1 and 0
         private float heaviness { get; set; }
         private float water { get; set; }
+        private float waterSaturationConstant { get; set; }
         private float soilTemp { get; set; }
+
+        private float mulchVolume;
+
         private List<SoilEffect> soilEffects;
 
-        public void evolveSoil() {
-            foreach  (SoilEffect soilEffect in soilEffects) {
-                // here we multiply by the baseline quality to normalize
-                currentQuality += baselineQuality * soilEffect.getModifier(); 
-                soilEffect
+        public Soil() {
+        }
+
+        public void evolveSoil(bool cleanEffects) {
+            float totalModifier = 0;
+            for  (int i=0;i<soilEffects.Capacity;i++) {
+                SoilEffect soilEffect = soilEffects[i];
+                if (cleanEffects && soilEffect.needsCleaning()) {
+                    soilEffects.RemoveAt(i);
+                } else {
+                    // here we multiply by the baseline quality to normalize
+                    totalModifier += baselineQuality * soilEffect.getModifierResult();
+                    soilEffect.incrementTimeElapsed();
+                }
+                currentQuality = totalModifier + baselineQuality;
             }
-
-
+            decayOrganicMatter();
+            recalibrateConstants();
         }
 
-        public void alterBaselineQuality(float newValue) {
-            baselineQuality = newValue;
-
-        }
+        
 
         public void dig() {
             // digging quality modifier = ae^-bx - ce^-dx + f
@@ -40,19 +51,63 @@ namespace Assets.GameEngine {
             List<SoilFunction> terms = new List<SoilFunction>{bonus, detriment};
             SoilEffect effectOfDigging = new SoilEffect(terms);
             soilEffects.Add(effectOfDigging);
+            incrementBaselineQuality(Parameters.soilDestructionFromDigging);
             
         }
 
-        public void addWater() {
+        public void addWater(float amount) {
+            // the quality of the soil determines the amount held
+            water += amount;
+            float waterSaturationLevel = waterSaturationConstant * currentQuality;
+
+            if (water > waterSaturationLevel) {
+                water = waterSaturationLevel;
+            }
+            else if (water < 0) {
+                water = 0;
+            }
 
         }
 
-        public void addMulch() {
-
+        public void addMulch(float volumeMetersCubedPerCoordinate) {
+            // slowly decays, adding to the soil quality
+            this.mulchVolume += volumeMetersCubedPerCoordinate;
+            
         }
 
-        public void addHumus() {
+        public void addHumus(float volumeMetersCubedPerCoordinate) {
+            float increment = volumeMetersCubedPerCoordinate / Parameters.humusVolumeToSoilQuality;
+            incrementBaselineQuality(increment);
+        }
 
+        private void decayOrganicMatter() {
+            float mulchDecayed = mulchVolume * Parameters.mulchDecayConstant;
+            addMulch(-mulchDecayed);
+            float humusAdded = mulchVolume * Parameters.mulchToHumusVolumeReductionFactor;
+            addHumus(humusAdded);
+        }
+
+        public void incrementBaselineQuality(float increment) {
+            // we also need to alter the current value, 
+            // as the soil effects will not know that they will need to tend to a different limit
+            baselineQuality += increment;
+            currentQuality += increment;
+
+        }
+        private void recalibrateConstants() {
+
+            //making sure that it does not exceed the bounds
+            if (currentQuality > 1) {
+                currentQuality = 1;
+            } else if (currentQuality < 0) {
+                currentQuality = 0;
+            }
+            //making sure that it does not exceed the bounds
+            if (baselineQuality > 1) {
+                baselineQuality = 1;
+            } else if (baselineQuality < 0) {
+                baselineQuality = 0;
+            }
         }
 
         internal float getCurrentQuality() {

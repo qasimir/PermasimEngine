@@ -17,9 +17,5 @@ namespace Assets.GameEngine {
         public override float f(float t) {
             return ampl * Mathf.Exp(t * ampl) ;
         }
-
-        public void alterBaseline(float baseline) {
-            this.baseline = baseline;
-        }
     }
 }
