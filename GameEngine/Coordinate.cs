@@ -11,6 +11,11 @@ namespace Assets.GameEngine {
         private Soil soil;
         private float AirTemp;
 
+        public Coordinate(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
         public void evolveTime() {
             foreach (Plant plant in plants) {
                 plant.grow(ref soil, AirTemp);
