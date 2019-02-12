@@ -7,15 +7,13 @@ using Assets.GameEngine;
 using Material = Assets.GameEngine.Material;
 using System.Reflection;
 
-public class TaskHandler : MonoBehaviour {
+public class TaskHandler {
     private static List<Coordinate> landSelected = null;
     private static string taskSelected = null;
     private static Material materialSelected = null;
     private static TaskHandler instance = new TaskHandler();
 
-    private TaskHandler() {
-
-    }
+    private TaskHandler() {}
 
     public static void executeTaskIfCriteriaSelected(string Task) {
         taskSelected = Task;

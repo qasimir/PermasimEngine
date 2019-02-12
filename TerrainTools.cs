@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class TerrainTools : MonoBehaviour {
     public int width = 5;
-    public float strength = 0.01f;
     public float bound = 1;
     public bool increaseElement = true;
 
@@ -29,10 +28,6 @@ public class TerrainTools : MonoBehaviour {
         float value = strength * (( Mathf.Cos(operand) + 1) / 2);
 
         return value;
-    }
-
-    public float sigmoid(float x) {
-        return 1/(1)
     }
 
 }

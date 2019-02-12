@@ -42,10 +42,7 @@ public class TaskSelectorScript : MonoBehaviour {
         int selectedIndex = dropdown.value;
         string selectedText = dropdown.options[selectedIndex].text;
         selectedText = selectedText.Replace(" ", "");
-
-        //use reflection to run the method associated with the text;
-        Type type = this.GetType();
-        MethodInfo method = type.GetMethod(selectedText);
+        TaskHandler.executeTaskIfCriteriaSelected(selectedText);
 
     }
 }
