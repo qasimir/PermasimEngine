@@ -28,18 +28,18 @@ public class MouseHandler : MonoBehaviour {
             primaryMouseClicked = true;
             Debug.Log(StateHandler.STATE);
             MethodInfo methodInfo = this.GetType().GetMethod(StateHandler.STATE, BindingFlags.NonPublic | BindingFlags.Instance);
-            castRays(0.03f, methodInfo);
+            castRays(methodInfo);
 
         } else if (Input.GetMouseButton(1)) {
             primaryMouseClicked = false;
             Debug.Log(StateHandler.STATE);
             MethodInfo methodInfo = this.GetType().GetMethod(StateHandler.STATE, BindingFlags.NonPublic | BindingFlags.Instance);
-            castRays(-0.03f, methodInfo);
+            castRays(methodInfo);
 
         } 
     }
 
-    private void castRays(float strength, MethodInfo methodInfo) {
+    private void castRays(MethodInfo methodInfo) {
         RaycastHit hit;
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit)) {
