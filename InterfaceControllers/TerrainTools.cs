@@ -1,12 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class TerrainTools : MonoBehaviour {
-    public int width = 5;
-    public float bound = 1;
-    public bool increaseElement = true;
+    public static Terrain terrain;
 
     public float cosineWeighting(float xPoint, float yPoint, float xCentre, float yCentre,
         int width = 20, float strength = 0.03f) {
@@ -29,5 +28,21 @@ public class TerrainTools : MonoBehaviour {
 
         return value;
     }
+
+    public static void raycastedVectorToTerrainCoord(Vector3 point, string propertyType, out int mouseX, out int mouseZ) {
+        TerrainData terrainData = terrain.terrainData;
+        PropertyInfo propertyWidth = terrainData.GetType().GetProperty(propertyType + "Width");
+        PropertyInfo propertyHeight = terrainData.GetType().GetProperty(propertyType + "Height");
+
+        int width = (int)propertyWidth.GetValue(terrain.terrainData, null);
+        int height = (int)propertyHeight.GetValue(terrain.terrainData, null);
+        
+        float terrainDataSizeX = terrainData.size.x;
+        float terrainDataSizeZ = terrainData.size.z;
+
+        mouseX = (int)((point.x * width) / terrainDataSizeX);
+        mouseZ = (int)((point.z * height) / terrainDataSizeZ);
+    }
+
 
 }

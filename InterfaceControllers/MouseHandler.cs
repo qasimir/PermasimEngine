@@ -10,10 +10,12 @@ public class MouseHandler : MonoBehaviour {
     private Camera cam;
     private Terrain terrain;
     private TerrainTools terrainTools;
+    public GUIStyle MouseDragSkin;
 
-    private bool primaryMouseClicked = true;
+    private bool mouseDragged = true;
     private float raiseLowerStrength = 0.03f;
     private int raiseLowerBrushWidth = 20;
+
     private TerrainSelection terrainSelection = new TerrainSelection();
 
 
@@ -24,14 +26,14 @@ public class MouseHandler : MonoBehaviour {
     }
 
     void Update() {
+        mouseDragged = false;
         if (Input.GetMouseButton(0)) {
-            primaryMouseClicked = true;
             Debug.Log(StateHandler.STATE);
             MethodInfo methodInfo = this.GetType().GetMethod(StateHandler.STATE, BindingFlags.NonPublic | BindingFlags.Instance);
             castRays(methodInfo);
 
         } else if (Input.GetMouseButton(1)) {
-            primaryMouseClicked = false;
+            
             Debug.Log(StateHandler.STATE);
             MethodInfo methodInfo = this.GetType().GetMethod(StateHandler.STATE, BindingFlags.NonPublic | BindingFlags.Instance);
             castRays(methodInfo);
@@ -48,50 +50,70 @@ public class MouseHandler : MonoBehaviour {
             methodInfo.Invoke(this, parameters);
         }
     }
-    private void RaiseLowerTerrain(Vector3 point) {
 
+    private void RaiseLowerTerrain(Vector3 point) {
 
         int heightMapWidth = terrain.terrainData.heightmapWidth;
         int heightMapHeight = terrain.terrainData.heightmapHeight;
 
-        float terrainDataSizeX = terrain.terrainData.size.x;
-        float terrainDataSizeZ = terrain.terrainData.size.z;
+        int mouseX;
+        int mouseZ;
 
-        int mouseX = (int)((point.x * heightMapWidth) / terrainDataSizeX);
-        int mouseZ = (int)((point.z * heightMapHeight) / terrainDataSizeZ);
+        TerrainTools.raycastedVectorToTerrainCoord(point,"heightmap",out mouseX,out mouseZ);
 
-        float strength = primaryMouseClicked?(raiseLowerStrength): (-1*raiseLowerStrength);
+        float strength = Input.GetMouseButton(0) ? (raiseLowerStrength) : (-1 * raiseLowerStrength);
         int XMinimum = (mouseX - raiseLowerBrushWidth) > 0 ? (mouseX - raiseLowerBrushWidth) : 0;
         int XMaximum = (mouseX + raiseLowerBrushWidth) < heightMapWidth ? (mouseX + raiseLowerBrushWidth) : heightMapWidth;
         int ZMinimum = (mouseZ - raiseLowerBrushWidth) > 0 ? (mouseZ - raiseLowerBrushWidth) : 0;
         int ZMaximum = (mouseZ + raiseLowerBrushWidth) < heightMapHeight ? (mouseZ + raiseLowerBrushWidth) : heightMapHeight;
 
         float[,] heights = terrain.terrainData.GetHeights(XMinimum, ZMinimum, XMaximum - XMinimum, ZMaximum - ZMinimum);
-       
+
 
         for (int x = 0; x < XMaximum - XMinimum; x++) {
             for (int z = 0; z < ZMaximum - ZMinimum; z++) {
                 heights[z, x] += terrainTools.cosineWeighting(
-                    (float)x, 
-                    (float)z, 
-                    (XMaximum - XMinimum)/2, 
-                    (ZMaximum - ZMinimum) / 2, 
+                    (float)x,
+                    (float)z,
+                    (XMaximum - XMinimum) / 2,
+                    (ZMaximum - ZMinimum) / 2,
                     raiseLowerBrushWidth,
                     strength) * Time.deltaTime;
             }
         }
-        
+
         terrain.terrainData.SetHeights(XMinimum, ZMinimum, heights);
     }
 
     private void SelectTerrain(Vector3 point) {
+
         if (Input.GetMouseButtonDown(0)) {
             terrainSelection = new TerrainSelection();
-            terrainSelection.startPoint = point;
+            terrainSelection.startPointTerrain = point;
+            terrainSelection.startPointMouse = Input.mousePosition;
             Debug.Log("Starting Point: " + point);
         } else {
-            terrainSelection.endPoint = point;
-            Debug.Log("Ending Point: " + point);
+            mouseDragged = true;
+            terrainSelection.endPointTerrain = point;
+            terrainSelection.endPointMouse = Input.mousePosition;
+            float BoxLeft = Input.mousePosition.x;
+            float BoxTop = Input.mousePosition.y;
+            Debug.Log(BoxLeft + "  " + BoxTop);
         }
+    }
+
+    private void Default(Vector3 point) {
+
+    }
+
+    void OnGUI() {
+        if (mouseDragged) {
+            float x = terrainSelection.startPointMouse.x;
+            float y = Screen.height - terrainSelection.startPointMouse.y;
+            float width = terrainSelection.endPointMouse.x - x;
+            float height = Screen.height - terrainSelection.endPointMouse.y - y;
+            GUI.Box(new Rect(x, y, width, height), "", MouseDragSkin);
+        }
+        
     }
 }
