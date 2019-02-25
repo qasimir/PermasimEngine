@@ -41,8 +41,6 @@ public class TaskSelectorScript : MonoBehaviour {
     private void DropdownValueChanged(Dropdown dropdown) {
         int selectedIndex = dropdown.value;
         string selectedText = dropdown.options[selectedIndex].text;
-        selectedText = selectedText.Replace(" ", "");
         TaskHandler.executeTaskIfCriteriaSelected(selectedText);
-
     }
 }
