@@ -2,5 +2,6 @@
 *.unity
 *.asset
 Standard Assets/
+SimulationEngine/
 
 !.gitignore
