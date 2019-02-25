@@ -5,11 +5,13 @@ using System.Text;
 using UnityEngine;
 
 
-public class NutrientManager : MonoBehaviour {
-    string nutrientName;
+namespace Simulation {
+    public class NutrientManager : MonoBehaviour {
+        string nutrientName;
 
-    public NutrientManager(string name) {
-        this.nutrientName = name;
+        public NutrientManager(string name) {
+            this.nutrientName = name;
+        }
     }
 }
 

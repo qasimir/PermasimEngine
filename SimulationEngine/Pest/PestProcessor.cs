@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-class PestProcessor : MonoBehaviour {
+namespace Simulation {
+    class PestProcessor : MonoBehaviour {
 
-    public void processPest(Pest pest) {
-        
+        public void processPest(Pest pest) {
+
+        }
     }
 }
