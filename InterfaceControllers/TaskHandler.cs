@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class TaskHandler : MonoBehaviour {
     private static List<Coordinate> landSelected = null;
     private static string taskSelected = "Task";
-    private static Material materialSelected = null;
+    private static Material materialSelected;
     private static TaskHandler instance;
 
     public static Text taskSelectedText;
@@ -44,10 +44,16 @@ public class TaskHandler : MonoBehaviour {
             Type type = instance.GetType();
             MethodInfo method = type.GetMethod(taskSelected.Replace(" ", ""));
             method.Invoke(instance, null);
-            taskSelected = null;
-            landSelected = null;
-            materialSelected = null;
+            resetState();
+            
         }
+    }
+
+    private static void resetState() {
+        taskSelected = "Task";
+        landSelected = null;
+        materialSelected = null;
+        AdditionalInfoSelectHandler.menuOpen = true;
     }
 
     private static void alterTaskDisplay() {
@@ -56,13 +62,6 @@ public class TaskHandler : MonoBehaviour {
         } else {
             taskSelectedText.text = "";
         }
-    }
-
-    public static string getActiveTask() {
-        return taskSelected;
-    }
-    public static void setActiveTask(string task) {
-        taskSelected = task;
     }
 
     private void DigSoil() {
@@ -91,7 +90,19 @@ public class TaskHandler : MonoBehaviour {
     void Update() {
 
     }
+    public static string getActiveTask() {
+        return taskSelected;
+    }
+    public static void setActiveTask(string task) {
+        taskSelected = task;
+    }
 
+    public static Material getActiveMaterial() {
+        return materialSelected;
+    }
+    public static void setActiveMaterial(Material material) {
+        materialSelected = material;
+    }
 
 
 }

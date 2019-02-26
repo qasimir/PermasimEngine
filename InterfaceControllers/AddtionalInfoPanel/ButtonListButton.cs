@@ -5,10 +5,14 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonListButton : MonoBehaviour{
+public class ButtonListButton : MonoBehaviour {
 
     [SerializeField]
     private Text buttonText;
+
+    void Start() {
+        this.gameObject.GetComponent<Button>().onClick.AddListener(OnClick);
+    }
 
     public void setText(string text) {
         this.buttonText.text = text;
@@ -19,8 +23,9 @@ public class ButtonListButton : MonoBehaviour{
 
     public void OnClick() {
         string currentTask = TaskHandler.getActiveTask();
-        TaskHandler.setActiveTask(currentTask + "_" +);
         TaskHandler.executeTaskIfCriteriaSelected(new Material(buttonText.text));
+        AdditionalInfoSelectHandler.menuOpen = false;
+        print(TaskHandler.getActiveMaterial().name);
         
     }
 
