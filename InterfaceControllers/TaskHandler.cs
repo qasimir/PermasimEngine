@@ -53,7 +53,7 @@ public class TaskHandler : MonoBehaviour {
         taskSelected = "Task";
         landSelected = null;
         materialSelected = null;
-        AdditionalInfoSelectHandler.menuOpen = true;
+        AdditionalInfoSelectHandler.closePanel();
     }
 
     private static void alterTaskDisplay() {

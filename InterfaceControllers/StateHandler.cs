@@ -9,6 +9,7 @@ public class StateHandler {
     public static readonly string defaultState = "Default";
     public static readonly string RaiseLowerState = "RaiseLowerTerrain";
     public static readonly string SelectTerrainState = "SelectTerrain";
+    public static readonly string AdditionalInfoState = "AdditionalInfoRequired";
 
 }
 

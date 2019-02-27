@@ -41,6 +41,7 @@ public class TaskSelectorScript : MonoBehaviour {
     private void DropdownValueChanged(Dropdown dropdown) {
         int selectedIndex = dropdown.value;
         string selectedText = dropdown.options[selectedIndex].text;
+        AdditionalInfoSelectHandler.unSetButtonsAsPrinted();
         TaskHandler.executeTaskIfCriteriaSelected(selectedText);
     }
 }

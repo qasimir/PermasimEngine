@@ -9,8 +9,8 @@ public class AdditionalInfoSelectHandler : MonoBehaviour {
     public Canvas rootCanvas;
     public Image content;
 
-    public static bool menuOpen = true;
-    private bool printedButtons = false;
+    private static bool panelShouldBeOpen = false;
+    private static bool printedButtons = false;
     private List<GameObject> currentButtons = new List<GameObject>();
 
 
@@ -24,17 +24,16 @@ public class AdditionalInfoSelectHandler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
         string activeTask = TaskHandler.getActiveTask();
         if (activeTask.Equals("Plant") && !printedButtons) {
             destroyPreviousButtons();
-            rootCanvas.enabled = menuOpen;
+            openPanel();
+            setButtonsAsPrinted();
             PlantFactory plantFactory = new PlantFactory();
             currentButtons = ButtonListController.Instance.populatePlantList();
-            printedButtons = true;
-        }	
-
-	}
+        }
+        rootCanvas.enabled = panelShouldBeOpen;
+    }
 
     private void destroyPreviousButtons() {
         if (currentButtons.Count > 0) {
@@ -44,4 +43,22 @@ public class AdditionalInfoSelectHandler : MonoBehaviour {
             currentButtons.Clear();
         }
     }
+
+    public static void openPanel() {
+        panelShouldBeOpen = true;
+        ScrollbarHandler.resetScrollbarToTop();
+    }
+
+    public static void closePanel() {
+        panelShouldBeOpen = false;
+    }
+
+    public static void unSetButtonsAsPrinted() {
+        printedButtons = false;
+    }
+
+    public static void setButtonsAsPrinted() {
+        printedButtons = true;
+    }
+
 }
