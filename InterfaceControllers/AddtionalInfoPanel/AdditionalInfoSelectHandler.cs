@@ -24,8 +24,10 @@ public class AdditionalInfoSelectHandler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
         string activeTask = TaskHandler.getActiveTask();
         if (activeTask.Equals("Plant") && !printedButtons) {
+            StateHandler.STATE = StateHandler.SelectPlantForPlantingState;
             destroyPreviousButtons();
             openPanel();
             setButtonsAsPrinted();

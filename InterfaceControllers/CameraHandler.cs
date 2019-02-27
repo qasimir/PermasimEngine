@@ -34,11 +34,11 @@ public class CameraHandler : MonoBehaviour {
 		if (Input.GetKey("d")) {
 			pos.x += panSpeed * Time.deltaTime;
 		}
-		if (Input.GetAxis("Mouse ScrollWheel") < prevScroll) {
+		if (Input.GetAxis("Mouse ScrollWheel") < prevScroll && StateHandler.STATE.Equals(StateHandler.defaultState)) {
             prevScroll = Input.GetAxis("Mouse ScrollWheel");
             pos.y += 2 * panSpeed * Time.deltaTime;
 		}
-		if (Input.GetAxis("Mouse ScrollWheel") > prevScroll) {
+		if (Input.GetAxis("Mouse ScrollWheel") > prevScroll && StateHandler.STATE.Equals(StateHandler.defaultState)) {
             prevScroll = Input.GetAxis("Mouse ScrollWheel");
             pos.y -= 2 * panSpeed * Time.deltaTime;
 		}

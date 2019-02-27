@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TaskSelectorScript : MonoBehaviour {
+public class TaskSelectorScript : MonoBehaviour, IPointerClickHandler{
 
 
     Dropdown dropdown;
@@ -43,5 +44,9 @@ public class TaskSelectorScript : MonoBehaviour {
         string selectedText = dropdown.options[selectedIndex].text;
         AdditionalInfoSelectHandler.unSetButtonsAsPrinted();
         TaskHandler.executeTaskIfCriteriaSelected(selectedText);
+    }
+
+    public void OnPointerClick(PointerEventData eventData) {
+        
     }
 }

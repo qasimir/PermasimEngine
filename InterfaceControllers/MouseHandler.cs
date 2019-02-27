@@ -131,8 +131,18 @@ public class MouseHandler : MonoBehaviour {
     }
 
     private void Default(Vector3 point) {
+        AdditionalInfoSelectHandler.closePanel();
+    }
+
+    private void TaskSelect(Vector3 point) {
 
     }
+
+    private void SelectPlantForPlanting(Vector3 point) {
+        AdditionalInfoSelectHandler.closePanel();
+        StateHandler.STATE = StateHandler.defaultState;
+    }
+    
 
     void OnGUI() {
         if (mouseDraggedTerrainSelect) {
