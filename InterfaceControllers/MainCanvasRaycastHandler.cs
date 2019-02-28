@@ -10,6 +10,7 @@ public class MainCanvasRaycastHandler : MonoBehaviour {
     GraphicRaycaster m_Raycaster;
     PointerEventData m_PointerEventData;
     EventSystem m_EventSystem;
+    public static string hasCastIntoUI = "unknown";
 
     void Start() {
         //Fetch the Raycaster from the GameObject (the Canvas)
@@ -31,11 +32,17 @@ public class MainCanvasRaycastHandler : MonoBehaviour {
 
             //Raycast using the Graphics Raycaster and mouse click position
             m_Raycaster.Raycast(m_PointerEventData, results);
-
+            /*
+            if (results.Count != 0 && !(StateHandler.STATE.Equals(StateHandler.SelectTerrainState))) {
+                hasCastIntoUI = "true";
+            } else if (results.Count == 0) {
+                hasCastIntoUI = "false";
+            }*/
+            
             //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
-            foreach (RaycastResult result in results) {
-                //Debug.Log("Hit " + result.gameObject.name);
-            }
+            //foreach (RaycastResult result in results) {
+            //    Debug.Log("Hit " + result.gameObject.name);
+            //}
         }
     }
 }

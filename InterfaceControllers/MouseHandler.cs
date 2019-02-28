@@ -4,12 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MouseHandler : MonoBehaviour {
 
     public GUIStyle mouseDragSkin;
     public GameObject selectionFlag;
-    public GameObject carrot;
     public float defaultRaiseLowerStrength = 0.03f;
     public int defaultRaiseLowerBrushWidth = 20;
 
@@ -18,7 +19,8 @@ public class MouseHandler : MonoBehaviour {
     private TerrainTools terrainTools;
 
     private bool mouseDraggedTerrainSelect = true;
-    
+    private bool terrainButtonPressed = false;
+
 
     private TerrainSelection terrainSelection = new TerrainSelection();
 
@@ -30,13 +32,12 @@ public class MouseHandler : MonoBehaviour {
     }
 
     void Update() {
-        if (Input.GetKey(KeyCode.T)) {
-            Instantiate(selectionFlag, new Vector3(96.8f, 0, 245.18f), Quaternion.identity);
-            Instantiate(carrot, new Vector3(96.8f, 0, 246.18f), Quaternion.identity);
+        if (Input.GetKey(KeyCode.P)) {
+            Debug.Log(StateHandler.STATE);
         }
 
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) {
-            Debug.Log(StateHandler.STATE);
+            //Debug.Log(StateHandler.STATE);
             MethodInfo methodInfo = this.GetType().GetMethod(StateHandler.STATE, BindingFlags.NonPublic | BindingFlags.Instance);
             castRays(methodInfo);
         } else {
@@ -103,12 +104,27 @@ public class MouseHandler : MonoBehaviour {
     }
 
     private void SelectTerrain(Vector3 point) {
+       
+        // firstly, we want to check to make sure that the user has not cast into the UI
+        /*
+        while (true) {
+            Debug.Log(MainCanvasRaycastHandler.hasCastIntoUI);
+            if (MainCanvasRaycastHandler.hasCastIntoUI.Equals("true")) {
+                MainCanvasRaycastHandler.hasCastIntoUI = "unknown";
+                return;
+
+            } else if (MainCanvasRaycastHandler.hasCastIntoUI.Equals("false")) {
+                MainCanvasRaycastHandler.hasCastIntoUI = "unknown";
+                break;
+            }
+        }*/
 
         if (Input.GetMouseButtonDown(0)) {
             terrainSelection = new TerrainSelection();
             terrainSelection.startPointTerrain = point;
             terrainSelection.startPointMouse = Input.mousePosition;
             Debug.Log("Starting Point: " + point);
+            
         } else if (Input.GetMouseButton(0)) {
             mouseDraggedTerrainSelect = true;
             terrainSelection.endPointTerrain = point;
@@ -116,22 +132,28 @@ public class MouseHandler : MonoBehaviour {
             float BoxLeft = Input.mousePosition.x;
             float BoxTop = Input.mousePosition.y;
         } else if (Input.GetMouseButtonUp(0)) {
+            if (terrainButtonPressed) {
+                Vector3 corner1 = castRays(new Vector3(terrainSelection.startPointMouse.x, terrainSelection.endPointMouse.y, 0));
+                Vector3 corner2 = castRays(new Vector3(terrainSelection.endPointMouse.x, terrainSelection.startPointMouse.y, 0));
 
-            Vector3 corner1 = castRays(new Vector3(terrainSelection.startPointMouse.x, terrainSelection.endPointMouse.y, 0));
-            Vector3 corner2 = castRays(new Vector3(terrainSelection.endPointMouse.x, terrainSelection.startPointMouse.y, 0));
+                terrainSelection.corner1 = corner1;
+                terrainSelection.corner2 = corner2;
 
-            terrainSelection.corner1 = corner1;
-            terrainSelection.corner2 = corner2;
-
-            Instantiate(selectionFlag, terrainSelection.startPointTerrain, Quaternion.identity);
-            Instantiate(selectionFlag, terrainSelection.endPointTerrain, Quaternion.identity);
-            Instantiate(selectionFlag, corner1, Quaternion.identity);
-            Instantiate(selectionFlag, corner2, Quaternion.identity);
+                Instantiate(selectionFlag, terrainSelection.startPointTerrain, Quaternion.identity);
+                Instantiate(selectionFlag, terrainSelection.endPointTerrain, Quaternion.identity);
+                Instantiate(selectionFlag, corner1, Quaternion.identity);
+                Instantiate(selectionFlag, corner2, Quaternion.identity);
+                StateHandler.STATE = StateHandler.defaultState;
+                terrainButtonPressed = false;
+            } else {
+                terrainButtonPressed = true;
+            }
         }
     }
 
     private void Default(Vector3 point) {
         AdditionalInfoSelectHandler.closePanel();
+        StateHandler.STATE = StateHandler.defaultState;
     }
 
     private void TaskSelect(Vector3 point) {
