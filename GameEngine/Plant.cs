@@ -9,22 +9,26 @@ public abstract class Plant {
 
     public string name;
 
-    private int age { get; set; } // in weeks?
-    private int maxMaturity;
-        
+    protected int age { get; set; } // in weeks?
+    protected int maxMaturity;
+
     // to do with size
-    private float size { get; set; }
-    private float maxSize;
+    protected float plantingDistance; // in cm
+    protected float size { get; set; }
+    protected float maxSize; // refers to the maximum size of the edible crop
 
     // if this is zero or negative, then the plant dies
-    private float health { get; set; }
-    private float heavinessOptimal;
-    private float temperatureOptimal;
-    private float temperatureUpperLimit;
-    private float temperatureLowerLimit;
-    private float waterOptimal;
-    private float waterUpperLimit;
-    private float waterLowerLimit;
+    protected float health { get; set; } // this is reduced by pests
+    protected float heavinessOptimal;
+    protected float temperatureOptimal;
+    protected float temperatureUpperLimit;
+    protected float temperatureLowerLimit;
+    
+    // water. Please note here the following points: the wilting point is taken to be the lower bound,
+    // with the upper bound being either the saturation point or the field capacity, depending on the plant.
+    protected float waterOptimal; // <- for most plants, the optimal water level will be the soil field capacity (a guess)
+    protected float waterUpperLimit; // <- for most plants, the upper limit will be half way between the satuation and the (a guess)
+    protected float waterLowerLimit; // <- for most plants, this will be the wilting point of the soil (a guess)
 
     public Plant(string name = "") {
         this.name = name;
@@ -42,16 +46,17 @@ public abstract class Plant {
         // soil heaviness
 
         // we weight them linearly according to their linear distances from the optimum
-
-        float soilQualityFactor = calculateSoilQualityFactor(ref soil, 4);
-        float temperatureFactor = calculateTemperatureFactor(ref soil, 4, coordTemp);
-        float waterFactor = calculateWaterFactor(ref soil, 4);
-        float heavinessFactor = calculateHeavinessFactor(ref soil, 4 );
+        int numberOfIndependantGrowthFactors = 4;
+        float soilQualityFactor = calculateSoilQualityFactor(ref soil, numberOfIndependantGrowthFactors);
+        float temperatureFactor = calculateTemperatureFactor(ref soil, numberOfIndependantGrowthFactors, coordTemp);
+        float waterFactor = calculateWaterFactor(ref soil, numberOfIndependantGrowthFactors);
+        float heavinessFactor = calculateHeavinessFactor(ref soil, numberOfIndependantGrowthFactors);
         float totalGrowthFactor =
-            soilQualityFactor +
+            health *
+            (soilQualityFactor +
             temperatureFactor +
             waterFactor +
-            heavinessFactor;
+            heavinessFactor);
 
         size += calculateGrowth(totalGrowthFactor);
         age++;

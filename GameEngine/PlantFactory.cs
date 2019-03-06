@@ -39,5 +39,13 @@ public class PlantFactory {
         return plantTypes;
     }
 
+    public List<Plant> createPlant(string name) {
+        Plant plantTemplate = plantTypes.Where(plantName => plantName.Equals(name)).First();
+    }
+
+    public void initializePlantTemplates() {
+
+    }
+
 
 }
