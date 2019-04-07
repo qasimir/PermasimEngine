@@ -34,6 +34,7 @@ public class MouseHandler : MonoBehaviour {
     void Update() {
         if (Input.GetKey(KeyCode.P)) {
             Debug.Log(StateHandler.STATE);
+            // Instantiate(new );
         }
 
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) {
@@ -104,20 +105,6 @@ public class MouseHandler : MonoBehaviour {
     }
 
     private void SelectTerrain(Vector3 point) {
-       
-        // firstly, we want to check to make sure that the user has not cast into the UI
-        /*
-        while (true) {
-            Debug.Log(MainCanvasRaycastHandler.hasCastIntoUI);
-            if (MainCanvasRaycastHandler.hasCastIntoUI.Equals("true")) {
-                MainCanvasRaycastHandler.hasCastIntoUI = "unknown";
-                return;
-
-            } else if (MainCanvasRaycastHandler.hasCastIntoUI.Equals("false")) {
-                MainCanvasRaycastHandler.hasCastIntoUI = "unknown";
-                break;
-            }
-        }*/
 
         if (Input.GetMouseButtonDown(0)) {
             terrainSelection = new TerrainSelection();
@@ -152,17 +139,20 @@ public class MouseHandler : MonoBehaviour {
     }
 
     private void Default(Vector3 point) {
-        AdditionalInfoSelectHandler.closePanel();
-        StateHandler.STATE = StateHandler.defaultState;
+        // AdditionalInfoSelectHandler.closePanel();
+        // StateHandler.STATE = StateHandler.defaultState;
     }
 
     private void TaskSelect(Vector3 point) {
-
+        //AdditionalInfoSelectHandler.closePanel();
+        StateHandler.STATE = StateHandler.defaultState;
     }
 
     private void SelectPlantForPlanting(Vector3 point) {
-        AdditionalInfoSelectHandler.closePanel();
-        StateHandler.STATE = StateHandler.defaultState;
+        // we need to close the menu
+        // AdditionalInfoSelectHandler.closePanel();
+        // StateHandler.STATE = StateHandler.defaultState;
+        // TaskSelectorScript.dropdown.value = 0;
     }
     
 

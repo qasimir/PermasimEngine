@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using UnityEngine;
 
 public class Asparagus : Vegetable {
 
@@ -10,7 +10,26 @@ public class Asparagus : Vegetable {
         Initialize(soil);
     }
 
+    public Asparagus(GameObject gameObject) {
+        Initialize();
+        this.gameObject = gameObject;
+    }
+
+    override public void PlantInSoil(Soil soil) {
+        float fieldCapacity = soil.getFieldCapacity();
+        float saturationPoint = soil.getSaturationPoint();
+        float wiltingPoint = soil.getWiltingPointEffective();
+        this.waterOptimal = fieldCapacity;
+        this.waterUpperLimit = ((saturationPoint - fieldCapacity) / 2) + fieldCapacity;
+        this.waterLowerLimit = wiltingPoint;
+    }
+
     private void Initialize(Soil soil) {
+        Initialize();
+        PlantInSoil(soil);
+    }
+
+    private void Initialize() {
         this.name = "Asparagus";
         this.age = 0;
         this.maxMaturity = 156; //3 years
@@ -21,12 +40,6 @@ public class Asparagus : Vegetable {
         this.heavinessOptimal = 0.2f;
         this.temperatureLowerLimit = -45; // from usda hardiness zone 2
         this.temperatureOptimal = 25; // optimum for photosynthesis
-        this.temperatureUpperLimit = 43; // no photosynthesis past this 
-        float fieldCapacity = soil.getFieldCapacity();
-        float saturationPoint = soil.getSaturationPoint();
-        float wiltingPoint = soil.getWiltingPointEffective();
-        this.waterOptimal = fieldCapacity;
-        this.waterUpperLimit = ((saturationPoint - fieldCapacity) / 2) + fieldCapacity;
-        this.waterLowerLimit = wiltingPoint;
+        this.temperatureUpperLimit = 43; // no photosynthesis past 
     }
 }

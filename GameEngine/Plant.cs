@@ -5,17 +5,19 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public abstract class Plant {
+public abstract class Plant : MonoBehaviour {
 
     public string name;
 
-    protected int age { get; set; } // in weeks?
+    public GameObject gameObject { get; set; }
+
+    public int age { get; set; } // in weeks?
     protected int maxMaturity;
 
     // to do with size
-    protected float plantingDistance; // in cm
-    protected float size { get; set; }
-    protected float maxSize; // refers to the maximum size of the edible crop
+    public float plantingDistance { get; set; } // in cm
+    public float size { get; set; }
+    public float maxSize; // refers to the maximum size of the edible crop
 
     // if this is zero or negative, then the plant dies
     protected float health { get; set; } // this is reduced by pests
@@ -27,14 +29,16 @@ public abstract class Plant {
     // water. Please note here the following points: the wilting point is taken to be the lower bound,
     // with the upper bound being either the saturation point or the field capacity, depending on the plant.
     protected float waterOptimal; // <- for most plants, the optimal water level will be the soil field capacity (a guess)
-    protected float waterUpperLimit; // <- for most plants, the upper limit will be half way between the satuation and the (a guess)
+    protected float waterUpperLimit; // <- for most plants, the upper limit will be half way between the satuation and the field capacity(a guess)
     protected float waterLowerLimit; // <- for most plants, this will be the wilting point of the soil (a guess)
 
     public Plant(string name = "") {
         this.name = name;
     }
 
-    public void grow(ref Soil soil, float coordTemp) {
+    public abstract void PlantInSoil(Soil soil);
+
+        public void grow(ref Soil soil, float coordTemp) {
         // we need to produce a number between 0 and 1 corresponding to either
         // full growth, or no growth. If the plant continually grows at 1, then at maturity
         // it will have grown to the max size

@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using UnityEngine;
 
-public class PlantFactory {
-    private List<Plant> plantTypes { get; set; }
+public class PlantFactory : MonoBehaviour {
+    public List<Plant> plantTypes { get; set; }
+    public Asparagus asparagus;
+
 
     public PlantFactory() {
         plantTypes = new List<Plant>();
-        plantTypes.Add(new Vegetable("Asparagus"));
+        GameObject asparagusGO = transform.Find("Asparagus").gameObject;
+        print(asparagusGO);
+        this.asparagus = new Asparagus(asparagusGO);
+        /*
         plantTypes.Add(new Vegetable("Aubergine"));
         plantTypes.Add(new Vegetable("Basil"));
         plantTypes.Add(new Vegetable("Broad Bean"));
@@ -32,15 +39,27 @@ public class PlantFactory {
         plantTypes.Add(new Vegetable("Silverbeet"));
         plantTypes.Add(new Vegetable("Spinach"));
         plantTypes.Add(new Vegetable("Sweet Corn"));
-        plantTypes.Add(new Vegetable("Zucchini"));
+        plantTypes.Add(new Vegetable("Zucchini"));*/
     }
 
     public List<Plant> getPlantTypes() {
         return plantTypes;
     }
 
-    public List<Plant> createPlant(string name) {
-        Plant plantTemplate = plantTypes.Where(plantName => plantName.Equals(name)).First();
+    public Plant getPlantType(string name) {
+        Type plantFactoryType = this.GetType();
+        return (Plant) plantFactoryType.GetField(name).GetValue(this);
+    }
+
+    public void createPlant(string name, Soil soil = null, float xTerrain = -1, float yTerrain = -1) {
+        Plant plant = getPlantType(name);
+        plant.PlantInSoil(soil);
+        Instantiate(plant.gameObject,new Vector3(xTerrain,0,yTerrain),Quaternion.identity);
+    }
+
+    public void createPlant(Plant plant, Soil soil = null, float xTerrain = -1, float yTerrain = -1) {
+        plant.PlantInSoil(soil);
+        Instantiate(plant.gameObject, new Vector3(xTerrain, 0, yTerrain), Quaternion.identity);
     }
 
     public void initializePlantTemplates() {

@@ -24,7 +24,7 @@ public class ButtonListButton : MonoBehaviour {
     public void OnClick() {
         string currentTask = TaskHandler.getActiveTask();
         TaskHandler.executeTaskIfCriteriaSelected(new Material(buttonText.text));
-        
+        AdditionalInfoSelectHandler.closePanel();
         print(TaskHandler.getActiveMaterial().name);
         
     }

@@ -10,7 +10,7 @@ public class ScrollbarHandler : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         scrollBar = GetComponent<Scrollbar>();
-        scrollBar.value = 1;
+        resetScrollbarToTop();
     }
 	
 	// Update is called once per frame

@@ -8,7 +8,7 @@ using System.Reflection;
 using UnityEngine.UI;
 
 public class TaskHandler : MonoBehaviour {
-    private static List<Coordinate> landSelected = null;
+    private static TerrainSelection landSelected = null;
     private static string taskSelected = "Task";
     private static Material materialSelected;
     private static TaskHandler instance;
@@ -21,8 +21,8 @@ public class TaskHandler : MonoBehaviour {
         executeTaskIfCriteriaSelected();
     }
 
-    public static void executeTaskIfCriteriaSelected(List<Coordinate> coordinate) {
-        landSelected = coordinate;
+    public static void executeTaskIfCriteriaSelected(TerrainSelection terrainSelection) {
+        landSelected = terrainSelection;
         executeTaskIfCriteriaSelected();
     }
 
@@ -69,7 +69,21 @@ public class TaskHandler : MonoBehaviour {
     }
 
     private void Plant() {
-
+        // calculate the number of crops required to fill the space, and fill in the coordinates
+        PlantFactory plantFactory = new PlantFactory();
+        Plant plant = plantFactory.getPlantType(materialSelected.name);
+        float plantingDistance = plant.plantingDistance;
+        
+        double landSelectionLength = Mathf.Abs(landSelected.corner1.x - landSelected.startPointTerrain.x);
+        double landSelectionWidth = Mathf.Abs(landSelected.corner2.y - landSelected.startPointTerrain.y);
+        
+        for (float w = 0; w < landSelectionWidth; w+=plantingDistance) {
+            for (float l = 0; l < landSelectionWidth; l += plantingDistance) {
+                plantFactory.createPlant(materialSelected.name);
+            }
+        }
+        // print the crops to the screen
+        // add crops to the backend
     }
 
     private void Mulch() {

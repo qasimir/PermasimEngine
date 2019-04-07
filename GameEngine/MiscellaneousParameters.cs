@@ -9,7 +9,7 @@ public class MiscellaneousParameters {
     // factors: *=
 
 
-    public static readonly float diggingPorosityModifier = 2;
-    public static readonly float diggingBiotaFactor = 0.5f;
+    //public static readonly float diggingPorosityModifier = 2;
+    //public static readonly float diggingBiotaFactor = 0.5f;
 
 }

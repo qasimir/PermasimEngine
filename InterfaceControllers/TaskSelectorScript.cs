@@ -8,7 +8,9 @@ using UnityEngine.UI;
 public class TaskSelectorScript : MonoBehaviour, IPointerClickHandler{
 
 
-    Dropdown dropdown;
+    public static Dropdown dropdown;
+
+
     Dictionary<int,string> entries = new Dictionary<int, string> {
     { 0, "Tasks" },
     { 1, "Dig Soil" },
@@ -47,6 +49,7 @@ public class TaskSelectorScript : MonoBehaviour, IPointerClickHandler{
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        
+       // StateHandler.STATE = StateHandler.TaskSelectState;
+       
     }
 }

@@ -33,5 +33,11 @@ public class Parameters {
     // I assume it takes about a year for all organic materials to be finally digested. therefore, each week, 4% of the mulch is decayed.
     public static readonly float mulchDecayConstant = 0.04f; // = (-1/d)*ln(1/8)
 
+    // this converts the coordinates of the world to meters. 1 coord increment in unity is roughly equival
+    public static readonly float coordinateToMeterCoefficient = 0.3f;
+    
+    // this converts meters to terrain coordinates. 1 coord increment in unity is roughly equival
+    public static readonly float meterToCoordinateCoefficient = 3.3f;
+
 
 }
